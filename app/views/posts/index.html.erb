@@ -1,0 +1,54 @@
+<div class="container">
+	<% @post.each do |p| %>
+		<div class="card offset-1" style="width: 60rem;">
+			<div class="card-header"><%= image_tag(current_user.avatar.url, size: "60x50", class: 'img logo rounded-circle mb-12')%>&nbsp;&nbsp;&nbsp;<b><%= p.user.name %></b></div>
+			   <div id="carouselExampleIndicators" class="carousel slide" data-interval="false">
+				  <ol class="carousel-indicators">
+				    <% p.attachment_posts.each.with_index(0) do |post, index| %>
+				      <li data-target="#carouselExampleIndicators" data-slide-to="<%= index %>" class="<%= index.zero? ? 'active' : '' %>"></li>
+				    <% end %>
+				  </ol>
+				  <div class="carousel-inner">
+				    <% p.attachment_posts.each.with_index(0) do |post, index| %>
+				      <div class="carousel-item <%= index.zero? ? 'active' : '' %>">
+				        <%= link_to post.foto.url do %>
+				          <%= link_to image_tag(post.foto_url, class: 'd-block w-100 img-fluid'), post_path(p.id) %>
+				        <% end %>
+				      </div>
+				    <% end %>
+				  </div>
+				  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+				    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+				    <span class="sr-only">Previous</span>
+				  </a>
+				  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+				    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+				    <span class="sr-only">Next</span>
+				  </a>
+				</div>
+			  <div class="card-body">
+			  		<div class="row" style="padding-left: 10px;">
+			  			<% pre_like = p.likes.find { |like| like.user_id == current_user.id} %>
+			  			<% if pre_like %>
+				  			<%= button_to dislike_posts_post_path(p.id), method: :patch, style: 'background: none; border: none;', class: 'submit1' do %>
+				  				<a href=""><%= render 'liked' %></a>
+				  			<% end %>&nbsp;&nbsp;&nbsp;
+				  		<% else %>
+				  			<%= button_to like_posts_post_path(p.id), method: :patch, style: 'background: none; border: none;', class: 'submit' do %>
+				  				<a href=""><%= render 'like' %></a>
+				  			<% end %>&nbsp;&nbsp;&nbsp;
+				  		<% end %>
+			  			
+			  			<a href="/posts/<%= p.id %>">
+				  			<%= render 'comment' %>
+				  		</a>
+			  		</div>
+			  	<p class="card-text" style="padding-top: 10px; font-size: 15px;"><b>Likes</b> <%= p.likes.count %> </p>
+			    <p class="card-text" style="font-size: 20px; font-family: Arial, Helvetica, sans-serif;"><b><%= p.user.name %></b> <%= p.content %></p>
+			    <a href="/posts/<%= p.id %>" style="font-size: 15px;"><p class="card-text"> View All <%= p.comments.ids.count %> Comments</p></a>
+
+			    <p>Post at <%= time_ago_in_words(p.updated_at) %> ago<br></p>
+			  </div>
+		</div><br>
+	<% end %>
+</div>

@@ -1,0 +1,42 @@
+	<div class="row">
+		<div class="col-4"><%= image_tag(@user.avatar.url, size: "300x250", class: 'img logo rounded-circle mb-5')%></div>
+			<div class="col-8" style="padding-left: 50px;"><br><br>
+				<div class="row">
+					<a style="font-size: 20px;"><b style="padding-left: 15px;"><%= @user.name %></b></a>
+					<% unless @user.id == current_user.id %>
+					<% if current_user.following?(@user)%>
+						<a style="padding-left: 20px;"><%= button_to "Unfollow", unfollow_user_path(@user), method: :patch, class: 'btn btn-primary', style: 'font-size: 15px;' %></a>
+					<% else %>
+						<a style="padding-left: 20px;"><%= button_to "Follow", follow_user_path(@user), method: :patch,class: 'btn btn-primary', style: 'font-size: 15px;'%></a>
+					<% end %>
+					<% end %>
+				</div><br>
+	                <div class="counter d-flex">
+	                  <div class="row">
+	                    <div class="col">
+	                      <strong class="number"><%= @user.posts.count %> Posts</strong>
+	                    </div>
+	                    <div class="">
+	                      <strong class="number" ><%= Following.where(follower_id: @user.id).count %> Followers</strong>
+	                    </div>
+	                    <div class="">
+	                      <strong class="number" style="padding-left: 20px;"><%= @user.followings.count %> Following</strong>
+	                    </div>
+	              	  </div>
+					</div>
+
+			</div>
+		</div><br>
+		<hr noshade size="30%">
+		<h4>Postingan: <%= @user.name %></h4>
+		<div class="row">
+			<% @user.posts.each do |p| %>
+				<% p.attachment_posts.each do |foto, index| %>
+				  <div class="col-md">
+			        <%= link_to foto.foto.url do %>
+				  	  <%= link_to image_tag(foto.foto_url, size: "300x300"), post_path(p.id) %> <br><br>
+			        <% end %>
+				  </div>
+			    <% end %>
+			<% end %>
+		</div>

@@ -1,0 +1,19 @@
+<div class="container">
+	<%= form_with model: @post, url: posts_path, :html => { :multipart => true } do |p| %>
+
+		<div class="form-group">
+			<h4><%= p.label :content %></h4>
+			<%= p.text_area :content, class: 'form-control col-md-5', rows: 8 %>
+		</div>
+
+		<%= p.fields_for :attachment_posts do |f| %>
+         <div class="field">
+           <%= f.label :Photos %><br>
+           <%= f.file_field :foto, :multiple => true, name:"attachment_posts[foto][]" %>
+         </div>
+       <% end %><br>
+
+       <%= p.submit "Create Post", class: 'btn-md btn-primary' %>
+
+	<% end %>
+</div>

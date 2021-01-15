@@ -1,0 +1,6 @@
+<div class="card ml-5">
+  <div class="card-body">
+    <b><%= reply.post.user.name %></b> <%= reply.comment %> <br>
+     Post at <%= time_ago_in_words(reply.created_at) %> ago
+  </div>
+</div>

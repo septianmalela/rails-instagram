@@ -1,0 +1,7 @@
+<% @results.each do |result| %>  
+        <div class="container">
+        	<ul>
+        		<li><a href="<%= user_path(result) %>" style="color: black; font-size: 25px;"><% result.id %> <%= result.name %><br></a></li>
+        	</ul>
+        </div>  
+<% end %>
